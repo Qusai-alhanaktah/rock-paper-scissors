@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <main>
+        <div id="collection">
+            <img src="https://gifimage.net/wp-content/uploads/2018/04/rock-gif-6.gif" id="rock" height="200px"
+                width="200px" onclick=play(rock)>
+            <img src="https://gifimage.net/wp-content/uploads/2018/04/paper-gif-1.gif" id="paper" height="200px"
+                width="200px" onclick=play(paper)>
+            <img src="https://cdn.clipart.email/d3c9beba37c9ac7e87f14c28fa3d205f_animation-scissors-gif-find-share-on-giphy_800-600.gif"
+                id="scissors" height="200px" width="200px" onclick=play(scissors)>
+        </div>
+        <div id="result">
+            <div id="myResult">
+                <h2 id="myScoure"></h2>
+                <img src="" alt="" title="" id="myGame" height="200px" width="200px">
+            </div>
+            <div id="computerResult">
+                <h2 id="computerScoure"></h2>
+                <img src="" alt="" title="" id="computerTry" height="200px" width="200px">
+            </div>
+            <button style=display:none>Replay</button>
+        </div>
+    </main>
+    <script>
+        let array = [document.getElementById('rock'), document.getElementById('paper'), document.getElementById('scissors')];
+        let myResult = 0;
+        let computerResult = 0;
+        if (myResult < 3 && computerResult < 3) {
+            function play(choice) {
+                let myGame = document.getElementById('myGame');
+                myGame.setAttribute("src", choice.src)
+
+                let computerTry = document.getElementById('computerTry');
+                let tryNumber = array[Math.floor(Math.random() * 3)];
+                computerTry.setAttribute("src", tryNumber.src);
+                computerTry.setAttribute("title", tryNumber.id);
+
+                if (choice.id.includes('rock')) {
+                    if (computerTry.title.includes('rock')) return;
+                    else if (computerTry.title.includes('paper')) computerResult++;
+                    else if (computerTry.title.includes('scissors')) myResult++;
+                } else if (choice.id.includes('paper')) {
+                    if (computerTry.title.includes('paper')) return;
+                    else if (computerTry.title.includes('scissors')) computerResult++;
+                    else if (computerTry.title.includes('rock')) myResult++;
+                } else if (choice.id.includes('scissors')) {
+                    if (computerTry.title.includes('scissors')) return;
+                    else if (computerTry.title.includes('rock')) computerResult++;
+                    else if (computerTry.title.includes('paper')) myResult++;
+                }
+
+                document.getElementById('myScoure').textContent = `My Scoure = ${myResult}`;
+                document.getElementById('computerScoure').textContent = `Computer Scoure = ${computerResult}`;
+                if (myResult >= 3 || computerResult >= 3) {
+                    let filed = document.getElementById('collection');
+                    filed.style.display = 'none';
+                    if (computerResult > myResult) {
+                        document.getElementById('myScoure').style.color = 'red';
+                        document.getElementById('computerScoure').style.color = 'green';
+                    } else {
+                        document.getElementById('myScoure').style.color = 'green';
+                        document.getElementById('computerScoure').style.color = 'red';
+                    }
+                    let btn = document.querySelector('button');
+                    btn.style.display = 'block'
+                    btn.addEventListener('click', e => {
+                        myResult = 0;
+                        computerResult = 0;
+                        let myGame = document.getElementById('myGame');
+                        myGame.setAttribute("src", '')
+
+                        let computerTry = document.getElementById('computerTry');
+                        computerTry.setAttribute("src", '')
+                        document.getElementById('myScoure').textContent = `My Scoure = ${myResult}`;
+                        document.getElementById('computerScoure').textContent = `Computer Scoure = ${computerResult}`;
+                        document.getElementById('myScoure').style.color = 'black';
+                        document.getElementById('computerScoure').style.color = 'black';
+                        filed.style.display = 'flex';
+                        btn.style.display = 'none';
+                    })
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
